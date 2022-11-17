@@ -5,6 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
 import {useEffect, useState} from 'react';
 import {Box, Toolbar, Typography} from '@mui/material';
@@ -12,6 +13,7 @@ import {getCompanyData} from '../company-data-generator';
 
 function CompanyTable() {
   let [rows, setRows] = useState([]);
+  let [page, setPage] = useState(0);
 
   useEffect(() => {
     rows = getCompanyData();
@@ -49,7 +51,7 @@ function CompanyTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {rows.slice(page * 10, page * 10 + 10).map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -65,6 +67,12 @@ function CompanyTable() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          count={rows.length}
+          rowsPerPage={10}
+          page={page}
+          onPageChange={(event, newPage) => setPage(newPage)}
+        />  
       </Paper>
     </Box>
   );
